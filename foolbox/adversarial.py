@@ -46,6 +46,7 @@ class Adversarial(object):
         self.__original_class = original_class
         self.__distance = distance
         self.verbose = verbose
+        self.last_failed_image = original_image
 
         self.__best_adversarial = None
         self.__best_distance = distance(value=np.inf)
@@ -216,6 +217,8 @@ class Adversarial(object):
         self._total_prediction_calls += 1
         predictions = self.__model.predictions(image)
         is_adversarial = self.__is_adversarial(image, predictions)
+        if not is_adversarial:
+            self.last_failed_image = image
 
         assert predictions.ndim == 1
         return predictions, is_adversarial

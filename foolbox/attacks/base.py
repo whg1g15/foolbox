@@ -44,6 +44,7 @@ class Attack(ABC):
             image,
             label=None,
             unpack=True,
+            return_failed_images=False,
             **kwargs):
 
         """Applies the attack.
@@ -97,7 +98,7 @@ class Attack(ABC):
 
         if adversarial.image is None:
             warnings.warn('{} did not find an adversarial, maybe the model or the criterion is not supported by this attack.'.format(self.name()))  # noqa: E501
-
+            return adversarial.last_failed_image
         if unpack:
             return adversarial.image
         else:
