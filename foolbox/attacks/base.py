@@ -98,12 +98,15 @@ class Attack(ABC):
 
         if adversarial.image is None:
             warnings.warn('{} did not find an adversarial, maybe the model or the criterion is not supported by this attack.'.format(self.name()))  # noqa: E501
-            return adversarial.last_failed_image, False
+            if return_failed_images:
+                return adversarial.last_failed_image, False
+            else:
+                return None, False
 
         if unpack:
             return adversarial.image, True
         else:
-            return adversarial
+            return adversarial.image, True
 
     def name(self):
         """Returns a human readable name that uniquely identifies
